@@ -2,33 +2,35 @@
   "name": "audio-mixer",
   "version": "2.1.4",
   "description": "Allows mixing of PCM audio streams.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc -p ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ConnorChristie/Audio-Mixer.git"
-  },
   "keywords": [
     "audio",
     "mixer",
     "stream",
     "pcm"
   ],
-  "author": "Connor Christie",
-  "license": "ISC",
+  "homepage": "https://github.com/ConnorChristie/Audio-Mixer#readme",
   "bugs": {
     "url": "https://github.com/ConnorChristie/Audio-Mixer/issues"
   },
-  "homepage": "https://github.com/ConnorChristie/Audio-Mixer#readme",
-  "devDependencies": {
-    "@types/node": "^8.0.14",
-    "audio-cmd-stream": "^1.0.3",
-    "typescript": "^2.4.2"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConnorChristie/Audio-Mixer.git"
+  },
+  "license": "ISC",
+  "author": "Connor Christie",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p .",
+    "format": "prettier --write src/**/*.ts"
   },
   "dependencies": {
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.14",
+    "audio-cmd-stream": "^1.0.3",
+    "prettier": "^2.1.2",
+    "typescript": "^2.4.2"
   }
 }
