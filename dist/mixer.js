@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Mixer = void 0;
 const input_1 = require("./input");
 const stream_1 = require("stream");
 const _ = require("underscore");
@@ -38,9 +39,13 @@ class Mixer extends stream_1.Readable {
             mixedBuffer.fill(0);
             this.inputs.forEach((input) => {
                 if (input.hasData) {
-                    let inputBuffer = this.args.channels === 1 ? input.readMono(samples) : input.readStereo(samples);
+                    let inputBuffer = this.args.channels === 1
+                        ? input.readMono(samples)
+                        : input.readStereo(samples);
                     for (let i = 0; i < samples * this.args.channels; i++) {
-                        let sample = this.readSample.call(mixedBuffer, i * this.sampleByteLength) + Math.floor(this.readSample.call(inputBuffer, i * this.sampleByteLength) / this.inputs.length);
+                        let sample = this.readSample.call(mixedBuffer, i * this.sampleByteLength) +
+                            Math.floor(this.readSample.call(inputBuffer, i * this.sampleByteLength) /
+                                this.inputs.length);
                         this.writeSample.call(mixedBuffer, sample, i * this.sampleByteLength);
                     }
                 }
@@ -59,7 +64,7 @@ class Mixer extends stream_1.Readable {
             bitDepth: args.bitDepth || this.args.bitDepth,
             sampleRate: args.sampleRate || this.args.sampleRate,
             volume: args.volume || 100,
-            clearInterval: args.clearInterval
+            clearInterval: args.clearInterval,
         });
         this.addInput(input, channel);
         return input;
@@ -87,7 +92,8 @@ class Mixer extends stream_1.Readable {
             if (ias > 0) {
                 input.lastDataTime = new Date().getTime();
             }
-            else if (ias <= 0 && new Date().getTime() - input.lastDataTime >= Mixer.INPUT_IDLE_TIMEOUT) {
+            else if (ias <= 0 &&
+                new Date().getTime() - input.lastDataTime >= Mixer.INPUT_IDLE_TIMEOUT) {
                 input.hasData = false;
                 return;
             }
@@ -103,5 +109,5 @@ class Mixer extends stream_1.Readable {
         });
     }
 }
-Mixer.INPUT_IDLE_TIMEOUT = 250;
 exports.Mixer = Mixer;
+Mixer.INPUT_IDLE_TIMEOUT = 250;

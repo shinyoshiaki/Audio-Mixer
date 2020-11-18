@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.InterleavedMixer = void 0;
 const mixer_1 = require("./mixer");
 class InterleavedMixer extends mixer_1.Mixer {
     _read() {
@@ -13,7 +14,8 @@ class InterleavedMixer extends mixer_1.Mixer {
                     let inputBuffer = input.readMono(samples);
                     for (let i = 0; i < samples; i++) {
                         let sample = this.readSample.call(inputBuffer, i * this.sampleByteLength);
-                        this.writeSample.call(mixedBuffer, sample, (i * this.sampleByteLength * this.args.channels) + (c * this.sampleByteLength));
+                        this.writeSample.call(mixedBuffer, sample, i * this.sampleByteLength * this.args.channels +
+                            c * this.sampleByteLength);
                     }
                 }
             }

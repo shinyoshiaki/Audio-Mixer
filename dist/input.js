@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Input = void 0;
 const stream_1 = require("stream");
 class Input extends stream_1.Writable {
     constructor(args) {
@@ -51,7 +52,7 @@ class Input extends stream_1.Writable {
         let sample = this.buffer.slice(0, bytes);
         this.buffer = this.buffer.slice(bytes);
         for (let i = 0; i < sample.length; i += 2) {
-            sample.writeInt16LE(Math.floor(this.args.volume * sample.readInt16LE(i) / 100), i);
+            sample.writeInt16LE(Math.floor((this.args.volume * sample.readInt16LE(i)) / 100), i);
         }
         return sample;
     }
@@ -61,7 +62,7 @@ class Input extends stream_1.Writable {
         let availableSamples = this.availableSamples(stereoBuffer.length);
         for (let i = 0; i < availableSamples; i++) {
             let l = this.readSample.call(stereoBuffer, i * this.sampleByteLength * 2);
-            let r = this.readSample.call(stereoBuffer, (i * this.sampleByteLength * 2) + this.sampleByteLength);
+            let r = this.readSample.call(stereoBuffer, i * this.sampleByteLength * 2 + this.sampleByteLength);
             this.writeSample.call(monoBuffer, Math.floor((l + r) / 2), i * this.sampleByteLength);
         }
         return monoBuffer;
@@ -73,7 +74,7 @@ class Input extends stream_1.Writable {
         for (let i = 0; i < availableSamples; i++) {
             let m = this.readSample.call(monoBuffer, i * this.sampleByteLength);
             this.writeSample.call(stereoBuffer, m, i * this.sampleByteLength * 2);
-            this.writeSample.call(stereoBuffer, m, (i * this.sampleByteLength * 2) + this.sampleByteLength);
+            this.writeSample.call(stereoBuffer, m, i * this.sampleByteLength * 2 + this.sampleByteLength);
         }
         return stereoBuffer;
     }
@@ -96,7 +97,9 @@ class Input extends stream_1.Writable {
     }
     clear(force) {
         let now = new Date().getTime();
-        if (force || (this.args.clearInterval && now - this.lastClearTime >= this.args.clearInterval)) {
+        if (force ||
+            (this.args.clearInterval &&
+                now - this.lastClearTime >= this.args.clearInterval)) {
             let length = 1024 * (this.args.bitDepth / 8) * this.args.channels;
             this.buffer = this.buffer.slice(0, length);
             this.lastClearTime = now;

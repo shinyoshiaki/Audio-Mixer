@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import { Input, InputArguments } from './input';
-import { Readable, ReadableOptions } from 'stream';
+import { Input, InputArguments } from "./input";
+import { Readable, ReadableOptions } from "stream";
 export interface MixerArguments extends ReadableOptions {
     channels: number;
     sampleRate: number;

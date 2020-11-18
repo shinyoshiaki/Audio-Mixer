@@ -1,6 +1,6 @@
 /// <reference types="node" />
-import { Writable, WritableOptions } from 'stream';
-import { Mixer } from './mixer';
+import { Writable, WritableOptions } from "stream";
+import { Mixer } from "./mixer";
 export interface InputArguments extends WritableOptions {
     channels?: number;
     bitDepth?: number;
