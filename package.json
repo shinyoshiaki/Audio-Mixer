@@ -1,6 +1,6 @@
 {
-  "name": "audio-mixer",
-  "version": "2.1.4",
+  "name": "@shinyoshiaki/audio-mixer",
+  "version": "0.0.1",
   "description": "Allows mixing of PCM audio streams.",
   "keywords": [
     "audio",
