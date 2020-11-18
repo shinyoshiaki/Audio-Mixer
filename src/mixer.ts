@@ -92,8 +92,11 @@ export class Mixer extends Readable {
 
       this.push(mixedBuffer);
     } else if (this.needReadable) {
-      clearImmediate(this._timer);
-      this._timer = setImmediate(this._read.bind(this));
+      clearTimeout(this._timer);
+      this._timer = setTimeout(
+        this._read.bind(this),
+        500 / this.args.sampleRate
+      );
     }
 
     this.clearBuffers();
