@@ -4,6 +4,7 @@ import { Readable, ReadableOptions } from "stream";
 export interface MixerArguments extends ReadableOptions {
     channels: number;
     sampleRate: number;
+    sleep: number;
     bitDepth?: number;
 }
 export declare class Mixer extends Readable {

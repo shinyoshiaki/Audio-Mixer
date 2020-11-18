@@ -4,9 +4,9 @@ exports.InterleavedMixer = void 0;
 const mixer_1 = require("./mixer");
 class InterleavedMixer extends mixer_1.Mixer {
     _read() {
-        let samples = this.getMaxSamples();
+        const samples = this.getMaxSamples();
         if (samples > 0 && samples !== Number.MAX_VALUE) {
-            let mixedBuffer = new Buffer(samples * this.sampleByteLength * this.args.channels);
+            const mixedBuffer = Buffer.alloc(samples * this.sampleByteLength * this.args.channels);
             mixedBuffer.fill(0);
             for (let c = 0; c < this.args.channels; c++) {
                 let input = this.inputs[c];

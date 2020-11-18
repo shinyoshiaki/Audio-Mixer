@@ -1,7 +1,4 @@
-import { Mixer, MixerArguments } from "./mixer";
-import { Input, InputArguments } from "./input";
-import { Readable, ReadableOptions } from "stream";
-
+import { Mixer } from "./mixer";
 import * as _ from "underscore";
 
 export class InterleavedMixer extends Mixer {
@@ -9,10 +6,10 @@ export class InterleavedMixer extends Mixer {
    * Called when this stream is read from
    */
   public _read() {
-    let samples = this.getMaxSamples();
+    const samples = this.getMaxSamples();
 
     if (samples > 0 && samples !== Number.MAX_VALUE) {
-      let mixedBuffer = new Buffer(
+      const mixedBuffer = Buffer.alloc(
         samples * this.sampleByteLength * this.args.channels
       );
 

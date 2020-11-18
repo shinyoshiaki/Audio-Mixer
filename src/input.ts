@@ -1,6 +1,5 @@
 import { Writable, WritableOptions } from "stream";
 import { Mixer } from "./mixer";
-
 import * as _ from "underscore";
 
 export class Input extends Writable {
@@ -77,7 +76,7 @@ export class Input extends Writable {
       bytes = this.buffer.length;
     }
 
-    let sample = this.buffer.slice(0, bytes);
+    const sample = this.buffer.slice(0, bytes);
     this.buffer = this.buffer.slice(bytes);
 
     for (let i = 0; i < sample.length; i += 2) {
@@ -96,14 +95,17 @@ export class Input extends Writable {
    * @param samples The number of samples to read
    */
   public readMono(samples) {
-    let stereoBuffer = this.read(samples);
-    let monoBuffer = new Buffer(stereoBuffer.length / 2);
+    const stereoBuffer = this.read(samples);
+    const monoBuffer = Buffer.alloc(stereoBuffer.length / 2);
 
-    let availableSamples = this.availableSamples(stereoBuffer.length);
+    const availableSamples = this.availableSamples(stereoBuffer.length);
 
     for (let i = 0; i < availableSamples; i++) {
-      let l = this.readSample.call(stereoBuffer, i * this.sampleByteLength * 2);
-      let r = this.readSample.call(
+      const l = this.readSample.call(
+        stereoBuffer,
+        i * this.sampleByteLength * 2
+      );
+      const r = this.readSample.call(
         stereoBuffer,
         i * this.sampleByteLength * 2 + this.sampleByteLength
       );
@@ -124,13 +126,13 @@ export class Input extends Writable {
    * @param samples The number of samples to read
    */
   public readStereo(samples) {
-    let monoBuffer = this.read(samples);
-    let stereoBuffer = new Buffer(monoBuffer.length * 2);
+    const monoBuffer = this.read(samples);
+    const stereoBuffer = Buffer.alloc(monoBuffer.length * 2);
 
-    let availableSamples = this.availableSamples(monoBuffer.length);
+    const availableSamples = this.availableSamples(monoBuffer.length);
 
     for (let i = 0; i < availableSamples; i++) {
-      let m = this.readSample.call(monoBuffer, i * this.sampleByteLength);
+      const m = this.readSample.call(monoBuffer, i * this.sampleByteLength);
 
       this.writeSample.call(stereoBuffer, m, i * this.sampleByteLength * 2);
       this.writeSample.call(
@@ -187,7 +189,7 @@ export class Input extends Writable {
    * Clears the buffer but keeps 1024 samples still in the buffer to avoid a possible empty buffer
    */
   public clear(force?: boolean) {
-    let now = new Date().getTime();
+    const now = new Date().getTime();
 
     if (
       force ||
@@ -205,7 +207,7 @@ export class Input extends Writable {
    * Clears the buffer
    */
   public destroy() {
-    this.buffer = new Buffer(0);
+    this.buffer = Buffer.alloc(0);
   }
 }
 

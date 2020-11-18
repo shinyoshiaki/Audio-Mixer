@@ -6,15 +6,13 @@ import * as _ from "underscore";
 export interface MixerArguments extends ReadableOptions {
   channels: number;
   sampleRate: number;
+  sleep: number;
   bitDepth?: number;
 }
 
 export class Mixer extends Readable {
-  protected args: MixerArguments;
   protected inputs: Input[];
-
   protected sampleByteLength: number;
-
   protected readSample;
   protected writeSample;
   protected needReadable: boolean = true;
@@ -22,14 +20,14 @@ export class Mixer extends Readable {
   private static INPUT_IDLE_TIMEOUT = 250;
   private _timer: any = null;
 
-  constructor(args: MixerArguments) {
+  constructor(protected args: MixerArguments) {
     super(args);
 
     if (args.sampleRate < 1) {
       args.sampleRate = 44100;
     }
 
-    let buffer = new Buffer(0);
+    const buffer = Buffer.alloc(0);
 
     if (args.bitDepth === 8) {
       this.readSample = buffer.readInt8;
@@ -50,7 +48,6 @@ export class Mixer extends Readable {
       this.sampleByteLength = 2;
     }
 
-    this.args = args;
     this.inputs = [];
   }
 
@@ -93,10 +90,7 @@ export class Mixer extends Readable {
       this.push(mixedBuffer);
     } else if (this.needReadable) {
       clearTimeout(this._timer);
-      this._timer = setTimeout(
-        this._read.bind(this),
-        500 / this.args.sampleRate
-      );
+      this._timer = setTimeout(this._read.bind(this), this.args.sleep);
     }
 
     this.clearBuffers();

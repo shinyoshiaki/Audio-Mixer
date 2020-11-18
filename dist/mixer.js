@@ -7,12 +7,13 @@ const _ = require("underscore");
 class Mixer extends stream_1.Readable {
     constructor(args) {
         super(args);
+        this.args = args;
         this.needReadable = true;
         this._timer = null;
         if (args.sampleRate < 1) {
             args.sampleRate = 44100;
         }
-        let buffer = new Buffer(0);
+        const buffer = Buffer.alloc(0);
         if (args.bitDepth === 8) {
             this.readSample = buffer.readInt8;
             this.writeSample = buffer.writeInt8;
@@ -29,7 +30,6 @@ class Mixer extends stream_1.Readable {
             this.writeSample = buffer.writeInt16LE;
             this.sampleByteLength = 2;
         }
-        this.args = args;
         this.inputs = [];
     }
     _read() {
@@ -53,8 +53,8 @@ class Mixer extends stream_1.Readable {
             this.push(mixedBuffer);
         }
         else if (this.needReadable) {
-            clearImmediate(this._timer);
-            this._timer = setImmediate(this._read.bind(this));
+            clearTimeout(this._timer);
+            this._timer = setTimeout(this._read.bind(this), this.args.sleep);
         }
         this.clearBuffers();
     }
@@ -65,6 +65,7 @@ class Mixer extends stream_1.Readable {
             sampleRate: args.sampleRate || this.args.sampleRate,
             volume: args.volume || 100,
             clearInterval: args.clearInterval,
+            maxBuffer: args.maxBuffer,
         });
         this.addInput(input, channel);
         return input;
