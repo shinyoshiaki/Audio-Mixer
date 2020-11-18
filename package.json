@@ -1,6 +1,6 @@
 {
   "name": "@shinyoshiaki/audio-mixer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Allows mixing of PCM audio streams.",
   "keywords": [
     "audio",
@@ -8,13 +8,13 @@
     "stream",
     "pcm"
   ],
-  "homepage": "https://github.com/ConnorChristie/Audio-Mixer#readme",
+  "homepage": "https://github.com/shinyoshiaki/Audio-Mixer#readme",
   "bugs": {
-    "url": "https://github.com/ConnorChristie/Audio-Mixer/issues"
+    "url": "https://github.com/shinyoshiaki/Audio-Mixer/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ConnorChristie/Audio-Mixer.git"
+    "url": "git+https://github.com/shinyoshiaki/Audio-Mixer.git"
   },
   "license": "ISC",
   "author": "Connor Christie",
