@@ -5,6 +5,8 @@ const stream_1 = require("stream");
 class Input extends stream_1.Writable {
     constructor(args) {
         super(args);
+        this.args = args;
+        this.buffer = Buffer.alloc(0);
         if (args.channels !== 1 && args.channels !== 2) {
             args.channels = 2;
         }
@@ -20,7 +22,6 @@ class Input extends stream_1.Writable {
         if (args.channels === 2) {
             this.readStereo = this.read;
         }
-        this.buffer = new Buffer(0);
         if (args.bitDepth === 8) {
             this.readSample = this.buffer.readInt8;
             this.writeSample = this.buffer.writeInt8;
@@ -87,6 +88,9 @@ class Input extends stream_1.Writable {
             this.hasData = true;
         }
         this.buffer = Buffer.concat([this.buffer, chunk]);
+        if (this.buffer.length > this.args.maxBuffer) {
+            this.buffer = chunk;
+        }
         next();
     }
     setVolume(volume) {

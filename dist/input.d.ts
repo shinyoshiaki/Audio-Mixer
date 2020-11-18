@@ -1,16 +1,9 @@
 /// <reference types="node" />
 import { Writable, WritableOptions } from "stream";
 import { Mixer } from "./mixer";
-export interface InputArguments extends WritableOptions {
-    channels?: number;
-    bitDepth?: number;
-    sampleRate?: number;
-    volume?: number;
-    clearInterval?: number;
-}
 export declare class Input extends Writable {
-    private mixer;
     private args;
+    private mixer;
     private buffer;
     private sampleByteLength;
     private readSample;
@@ -29,4 +22,12 @@ export declare class Input extends Writable {
     getVolume(): number;
     clear(force?: boolean): void;
     destroy(): void;
+}
+export interface InputArguments extends WritableOptions {
+    channels?: number;
+    bitDepth?: number;
+    sampleRate?: number;
+    volume?: number;
+    clearInterval?: number;
+    maxBuffer?: number;
 }

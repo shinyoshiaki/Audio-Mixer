@@ -3,19 +3,10 @@ import { Mixer } from "./mixer";
 
 import * as _ from "underscore";
 
-export interface InputArguments extends WritableOptions {
-  channels?: number;
-  bitDepth?: number;
-  sampleRate?: number;
-  volume?: number;
-  clearInterval?: number;
-}
-
 export class Input extends Writable {
   private mixer: Mixer;
-  private args: InputArguments;
 
-  private buffer: Buffer;
+  private buffer: Buffer = Buffer.alloc(0);
   private sampleByteLength: number;
 
   private readSample;
@@ -26,7 +17,7 @@ export class Input extends Writable {
   public lastDataTime: number;
   public lastClearTime: number;
 
-  constructor(args: InputArguments) {
+  constructor(private args: InputArguments) {
     super(args);
 
     if (args.channels !== 1 && args.channels !== 2) {
@@ -48,8 +39,6 @@ export class Input extends Writable {
     if (args.channels === 2) {
       this.readStereo = this.read;
     }
-
-    this.buffer = new Buffer(0);
 
     if (args.bitDepth === 8) {
       this.readSample = this.buffer.readInt8;
@@ -175,6 +164,9 @@ export class Input extends Writable {
     }
 
     this.buffer = Buffer.concat([this.buffer, chunk]);
+    if (this.buffer.length > this.args.maxBuffer) {
+      this.buffer = chunk;
+    }
     next();
   }
 
@@ -217,4 +209,13 @@ export class Input extends Writable {
   public destroy() {
     this.buffer = new Buffer(0);
   }
+}
+
+export interface InputArguments extends WritableOptions {
+  channels?: number;
+  bitDepth?: number;
+  sampleRate?: number;
+  volume?: number;
+  clearInterval?: number;
+  maxBuffer?: number;
 }
