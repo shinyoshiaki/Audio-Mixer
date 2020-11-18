@@ -110,6 +110,7 @@ export class Mixer extends Readable {
       sampleRate: args.sampleRate || this.args.sampleRate,
       volume: args.volume || 100,
       clearInterval: args.clearInterval,
+      maxBuffer: args.maxBuffer,
     });
 
     this.addInput(input, channel);

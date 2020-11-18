@@ -58,8 +58,6 @@ export class Input extends Writable {
 
       this.sampleByteLength = 2;
     }
-
-    this.args = args;
     this.hasData = false;
 
     this.lastClearTime = new Date().getTime();
